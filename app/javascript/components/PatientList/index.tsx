@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, type FC } from "react";
+import { useState, useCallback, useEffect, useRef, type FC } from "react";
 import type { Patient } from "../../types";
 import { patientsApi } from "../../api/client";
 
@@ -21,22 +21,31 @@ const PatientList: FC<Props> = ({ onSelectPatient }) => {
   const [ward, setWard] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const latestRequest = useRef(0);
 
   const fetchPatients = useCallback(async (q: string, w: string) => {
+    const requestId = ++latestRequest.current;
     setLoading(true);
     setError(null);
     try {
       const { data } = await patientsApi.list({ q: q || undefined, ward: w || undefined });
-      setPatients(data.data);
+      if (requestId === latestRequest.current) {
+        setPatients(data.data);
+      }
     } catch {
-      setError("Failed to load patients. Please try again.");
+      if (requestId === latestRequest.current) {
+        setError("Failed to load patients. Please try again.");
+      }
     } finally {
-      setLoading(false);
+      if (requestId === latestRequest.current) {
+        setLoading(false);
+      }
     }
   }, []);
 
   useEffect(() => {
-    fetchPatients(query, ward);
+    const timer = setTimeout(() => fetchPatients(query, ward), 300);
+    return () => clearTimeout(timer);
   }, [fetchPatients, query, ward]);
 
   return (

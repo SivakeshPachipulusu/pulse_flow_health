@@ -63,10 +63,10 @@ test("renders the patients table with data", async () => {
   expect(screen.getByText("95 bpm")).toBeInTheDocument();
 });
 
-test("shows spinner while loading", () => {
+test("shows spinner while loading", async () => {
   (patientsApi.list as jest.Mock).mockReturnValue(new Promise(() => {}));
   render(<PatientList onSelectPatient={jest.fn()} />);
-  expect(screen.getByRole("status")).toBeInTheDocument();
+  await waitFor(() => expect(screen.getByRole("status")).toBeInTheDocument(), { timeout: 500 });
 });
 
 test("shows error message on fetch failure", async () => {
