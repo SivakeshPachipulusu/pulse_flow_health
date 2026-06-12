@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, type FC } from "react";
+import { useState, useEffect, useCallback, type FC, type FormEvent } from "react";
 import type { Patient, ChartData } from "../../types";
 import { vitalsApi } from "../../api/client";
 import VitalChart from "../VitalChart";
@@ -130,6 +130,82 @@ const Dashboard: FC<Props> = ({ patient, onBack }) => {
           </div>
         </div>
       )}
+
+      <IngestTestReading patientId={patient.id} />
+    </div>
+  );
+};
+
+const IngestTestReading: FC<{ patientId: string }> = ({ patientId }) => {
+  const [fields, setFields] = useState({ heart_rate: "82", spo2: "97", temperature: "36.9", respiratory_rate: "16", blood_pressure: "120/80" });
+  const [status, setStatus] = useState<{ ok: boolean; msg: string } | null>(null);
+  const [submitting, setSubmitting] = useState(false);
+
+  const set = (k: string, v: string) => setFields((f) => ({ ...f, [k]: v }));
+
+  const submit = async (e: FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    setStatus(null);
+    try {
+      const { data } = await vitalsApi.create(patientId, {
+        ...fields,
+        heart_rate: Number(fields.heart_rate),
+        spo2: Number(fields.spo2),
+        temperature: Number(fields.temperature),
+        respiratory_rate: Number(fields.respiratory_rate),
+        device_id: "DEV-TEST-UI",
+        device_type: "Manual Entry",
+        recorded_at: new Date().toISOString(),
+      });
+      setStatus({ ok: true, msg: `Reading saved (${data.data.id.slice(0, 8)}…). Sidekiq job enqueued to anonymize.` });
+    } catch (err: any) {
+      setStatus({ ok: false, msg: err?.response?.data?.errors?.join(", ") ?? "Failed to post reading." });
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="card mt-4 border-secondary">
+      <div className="card-header bg-light">
+        <span className="fw-semibold small">
+          <i className="bi bi-send me-2 text-secondary" />
+          Post Test Reading — triggers Sidekiq anonymize job
+        </span>
+      </div>
+      <div className="card-body">
+        <form onSubmit={submit}>
+          <div className="row g-2 align-items-end">
+            {[
+              { key: "heart_rate", label: "HR (bpm)" },
+              { key: "spo2", label: "SpO₂ (%)" },
+              { key: "temperature", label: "Temp (°C)" },
+              { key: "respiratory_rate", label: "RR (bpm)" },
+              { key: "blood_pressure", label: "BP (mmHg)" },
+            ].map(({ key, label }) => (
+              <div className="col-6 col-md-2" key={key}>
+                <label className="form-label small mb-1">{label}</label>
+                <input
+                  className="form-control form-control-sm"
+                  value={fields[key as keyof typeof fields]}
+                  onChange={(e) => set(key, e.target.value)}
+                />
+              </div>
+            ))}
+            <div className="col-6 col-md-2">
+              <button className="btn btn-sm btn-secondary w-100" type="submit" disabled={submitting}>
+                {submitting ? <span className="spinner-border spinner-border-sm" /> : "Submit"}
+              </button>
+            </div>
+          </div>
+        </form>
+        {status && (
+          <div className={`alert alert-${status.ok ? "success" : "danger"} mt-3 mb-0 py-2 small`}>
+            {status.msg}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
