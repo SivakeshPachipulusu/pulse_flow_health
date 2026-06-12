@@ -11,7 +11,8 @@ class PatientSerializer < Blueprinter::Base
 
   view :with_latest_vitals do
     association :vital_readings, blueprint: VitalReadingSerializer do |patient|
-      patient.vital_readings.recent.limit(5)
+      # Sort in Ruby to use the preloaded association — avoids N+1 per patient
+      patient.vital_readings.sort_by(&:recorded_at).last(5)
     end
   end
 end

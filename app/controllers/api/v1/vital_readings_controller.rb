@@ -24,7 +24,7 @@ module Api
       end
 
       def chart_data
-        @readings = @patient.vital_readings.for_patient(@patient.id).last(100)
+        @readings = @patient.vital_readings.order(recorded_at: :asc).last(100)
       end
 
       private
