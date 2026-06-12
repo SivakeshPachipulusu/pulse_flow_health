@@ -1,4 +1,4 @@
-import { type FC, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import VitalChart from "../components/VitalChart";

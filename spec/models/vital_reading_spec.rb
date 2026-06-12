@@ -36,14 +36,4 @@ RSpec.describe VitalReading, type: :model do
     it { expect(reading.blood_pressure).to eq("120/80") }
     it { expect(reading.temperature).to eq(37.1) }
   end
-
-  describe ".for_patient scope" do
-    it "returns readings in ascending order by created_at" do
-      patient  = create(:patient)
-      newer    = create(:vital_reading, patient: patient, recorded_at: 1.hour.ago)
-      older    = create(:vital_reading, patient: patient, recorded_at: 3.hours.ago)
-      expect(VitalReading.for_patient(patient.id).first).to eq(older)
-      expect(VitalReading.for_patient(patient.id).last).to eq(newer)
-    end
-  end
 end

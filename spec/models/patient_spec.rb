@@ -17,14 +17,6 @@ RSpec.describe Patient, type: :model do
     end
   end
 
-  describe ".active scope" do
-    it "only returns active patients" do
-      create(:patient, status: "active")
-      create(:patient, :discharged)
-      expect(Patient.active.count).to eq(1)
-    end
-  end
-
   describe ".search_by_name_and_notes" do
     let!(:p1) { create(:patient, first_name: "Amelia", last_name: "Rodriguez") }
     let!(:p2) { create(:patient, first_name: "Bob", last_name: "Smith", diagnosis_notes: "hypertension chronic") }

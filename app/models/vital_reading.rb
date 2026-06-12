@@ -8,8 +8,6 @@ class VitalReading < ApplicationRecord
   validates :status, inclusion: { in: STATUSES }
 
   scope :recent, -> { order(recorded_at: :desc) }
-  scope :flagged, -> { where(status: "flagged") }
-  scope :for_patient, ->(patient_id) { where(patient_id: patient_id).order(recorded_at: :asc) }
 
   # JSONB helpers
   def heart_rate  = metrics["heart_rate"]
