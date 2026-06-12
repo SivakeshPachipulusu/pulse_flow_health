@@ -1,4 +1,4 @@
-web: RBENV_VERSION=4.0.2 bin/rails server -p 3002
+web: RBENV_VERSION=4.0.2 bin/rails server -p 3000
 js: yarn build --watch
 css: yarn watch:css
 sidekiq: RBENV_VERSION=4.0.2 bundle exec sidekiq -C config/sidekiq.yml
