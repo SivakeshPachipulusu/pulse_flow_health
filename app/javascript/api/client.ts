@@ -3,7 +3,10 @@ import type { PatientsResponse, Patient, VitalReading, ChartData } from "../type
 
 const api = axios.create({
   baseURL: "/api/v1",
-  headers: { "Content-Type": "application/json" },
+  headers: {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+  },
 });
 
 export const patientsApi = {
