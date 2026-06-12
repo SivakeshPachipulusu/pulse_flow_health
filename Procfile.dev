@@ -1,3 +1,4 @@
-web: env RUBY_DEBUG_OPEN=true bin/rails server
+web: RBENV_VERSION=4.0.2 bin/rails server -p 3002
 js: yarn build --watch
 css: yarn watch:css
+sidekiq: RBENV_VERSION=4.0.2 bundle exec sidekiq -C config/sidekiq.yml

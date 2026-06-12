@@ -17,18 +17,47 @@ App runs at `http://localhost:3000`
 
 **Requirements:** Ruby 4.0.2, Node 20+, PostgreSQL 15, Redis 7
 
+### First-time setup
+
 ```bash
 bundle install
-npm install
+yarn install
 cp .env.example .env
-bundle exec rails db:create db:migrate db:seed
-bin/dev          # starts Rails + esbuild + CSS watcher
+RBENV_VERSION=4.0.2 bundle exec rails db:create db:migrate db:seed
 ```
 
-Sidekiq in a separate terminal:
+### Starting the servers
+
+**Option A — one command (recommended)**
+
 ```bash
-bundle exec sidekiq
+bin/dev
 ```
+
+This starts all 4 processes via foreman:
+- `web` — Rails server on http://localhost:3002
+- `js` — esbuild watching `app/javascript/`
+- `css` — Sass + PostCSS watching `app/assets/stylesheets/`
+- `sidekiq` — background job worker
+
+**Option B — separate terminals**
+
+```bash
+# Terminal 1 — Rails
+RBENV_VERSION=4.0.2 bundle exec rails server -p 3002
+
+# Terminal 2 — JS watcher
+yarn build --watch
+
+# Terminal 3 — CSS watcher
+yarn watch:css
+
+# Terminal 4 — Sidekiq
+RBENV_VERSION=4.0.2 bundle exec sidekiq -C config/sidekiq.yml
+```
+
+App: http://localhost:3002  
+Sidekiq dashboard: http://localhost:3002/sidekiq
 
 ## Running Tests
 
