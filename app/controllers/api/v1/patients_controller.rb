@@ -1,24 +1,17 @@
 module Api
   module V1
     class PatientsController < Api::BaseController
-      include Pagy::Backend
-
       def index
-        patients = Patient.all
+        patients = Patient.includes(:vital_readings)
         patients = patients.search_by_name_and_notes(params[:q]) if params[:q].present?
         patients = patients.by_ward(params[:ward]) if params[:ward].present?
         patients = patients.where(status: params[:status]) if params[:status].present?
 
-        pagy, records = pagy(patients.includes(:vital_readings))
-
-        render json: {
-          data:       PatientSerializer.render_as_hash(records, view: :with_latest_vitals),
-          pagination: pagy_metadata(pagy)
-        }
+        render json: { data: PatientSerializer.render_as_hash(patients, view: :with_latest_vitals) }
       end
 
       def show
-        patient = Patient.find(params[:id])
+        patient = Patient.includes(:vital_readings).find(params[:id])
         render json: { data: PatientSerializer.render_as_hash(patient, view: :with_latest_vitals) }
       end
 
@@ -37,8 +30,8 @@ module Api
 
       def patient_params
         params.require(:patient).permit(
-          :first_name, :last_name, :mrn, :date_of_birth, :gender,
-          :email, :phone, :diagnosis_notes, :ward, :status
+          :first_name, :last_name, :mrn, :date_of_birth,
+          :gender, :email, :phone, :diagnosis_notes, :ward, :status
         )
       end
     end

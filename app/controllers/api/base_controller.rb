@@ -1,40 +1,15 @@
 module Api
-  class BaseController < ApplicationController
-    protect_from_forgery with: :null_session
-    before_action :authenticate_request!
-
-    rescue_from ActiveRecord::RecordNotFound, with: :not_found
-    rescue_from ActiveRecord::RecordInvalid, with: :unprocessable
-    rescue_from ActionController::ParameterMissing, with: :bad_request
-
-    private
-
-    def authenticate_request!
-      token = request.headers["Authorization"]&.split(" ")&.last
-      return render_unauthorized unless token
-
-      payload = JwtService.decode(token)
-      return render_unauthorized unless payload
-
-      @current_patient_mrn = payload["sub"]
-    rescue JWT::DecodeError
-      render_unauthorized
+  class BaseController < ActionController::API
+    rescue_from ActiveRecord::RecordNotFound do |e|
+      render json: { error: e.message }, status: :not_found
     end
 
-    def not_found(err)
-      render json: { error: err.message }, status: :not_found
+    rescue_from ActiveRecord::RecordInvalid do |e|
+      render json: { error: e.message }, status: :unprocessable_entity
     end
 
-    def unprocessable(err)
-      render json: { error: err.message }, status: :unprocessable_entity
-    end
-
-    def bad_request(err)
-      render json: { error: err.message }, status: :bad_request
-    end
-
-    def render_unauthorized
-      render json: { error: "Unauthorized" }, status: :unauthorized
+    rescue_from ActionController::ParameterMissing do |e|
+      render json: { error: e.message }, status: :bad_request
     end
   end
 end

@@ -9,7 +9,7 @@ class VitalReading < ApplicationRecord
 
   scope :recent, -> { order(recorded_at: :desc) }
   scope :flagged, -> { where(status: "flagged") }
-  scope :for_patient, ->(patient_id) { where(patient_id: patient_id).order(created_at: :asc) }
+  scope :for_patient, ->(patient_id) { where(patient_id: patient_id).order(recorded_at: :asc) }
 
   # JSONB helpers
   def heart_rate  = metrics["heart_rate"]

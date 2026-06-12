@@ -14,20 +14,15 @@ module Api
       end
 
       def create
-        result = Vitals::IngestionService.new(
-          patient: @patient,
-          payload: vital_params.to_h
-        ).call
+        result = Vitals::IngestionService.new(patient: @patient, payload: vital_params.to_h).call
 
         if result.success
-          render json: { data: VitalReadingSerializer.render_as_hash(result.vital_reading) },
-                 status: :created
+          render json: { data: VitalReadingSerializer.render_as_hash(result.vital_reading) }, status: :created
         else
           render json: { errors: result.errors }, status: :unprocessable_entity
         end
       end
 
-      # Jbuilder endpoint for chart-optimised payload
       def chart_data
         @readings = @patient.vital_readings.for_patient(@patient.id).last(100)
       end
