@@ -30,7 +30,7 @@ RBENV_VERSION=4.0.2 bundle exec rails db:create db:migrate db:seed
 ```bash
 bin/dev
 ```
-Starts Rails (port 3002), esbuild, CSS watcher, and Sidekiq in one command.
+Starts Rails (port 3000), esbuild, CSS watcher, and Sidekiq in one command.
 
 App: http://localhost:3000  
 Sidekiq dashboard: http://localhost:3000/sidekiq
