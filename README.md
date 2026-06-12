@@ -32,8 +32,8 @@ bin/dev
 ```
 Starts Rails (port 3002), esbuild, CSS watcher, and Sidekiq in one command.
 
-App: http://localhost:3002  
-Sidekiq dashboard: http://localhost:3002/sidekiq
+App: http://localhost:3000  
+Sidekiq dashboard: http://localhost:3000/sidekiq
 
 ---
 
