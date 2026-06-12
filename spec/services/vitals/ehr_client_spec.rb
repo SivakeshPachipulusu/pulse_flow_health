@@ -3,7 +3,7 @@ require "rails_helper"
 RSpec.describe Vitals::EhrClient do
   subject(:client) { described_class.new(token: "test-token") }
 
-  describe "#fetch_patient_thresholds", :vcr do
+  describe "#fetch_patient_thresholds" do
     context "when the EHR responds successfully" do
       it "returns threshold data" do
         WebMock.stub_request(:get, /patients\/MRN-001\/thresholds/)

@@ -4,8 +4,6 @@ require_relative "../config/environment"
 abort("Running in production!") if Rails.env.production?
 
 require "rspec/rails"
-require "capybara/rails"
-require "capybara/rspec"
 require "webmock/rspec"
 require "shoulda/matchers"
 

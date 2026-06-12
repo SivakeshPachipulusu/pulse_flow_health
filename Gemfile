@@ -9,7 +9,6 @@ gem "cssbundling-rails"
 gem "jbuilder"
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 gem "bootsnap", require: false
-gem "image_processing", "~> 1.2"
 gem "sidekiq", "~> 7.0"
 gem "faraday", "~> 2.0"
 gem "faraday-retry"
@@ -24,18 +23,9 @@ group :development, :test do
   gem "factory_bot_rails"
   gem "faker"
   gem "webmock"
-  gem "vcr"
   gem "shoulda-matchers"
 end
 
 group :development do
   gem "web-console"
-  gem "bullet"
-  gem "rack-mini-profiler"
-end
-
-group :test do
-  gem "capybara"
-  gem "selenium-webdriver"
-  gem "database_cleaner-active_record"
 end
