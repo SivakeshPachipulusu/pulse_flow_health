@@ -21,7 +21,7 @@ class Patient < ApplicationRecord
   validates :status, inclusion: { in: STATUSES }
 
   scope :active, -> { where(status: "active") }
-  scope :by_ward, ->(ward) { where(ward: ward) }
+  scope :by_ward, ->(ward) { where("lower(ward) = lower(?)", ward) }
 
   def full_name
     "#{first_name} #{last_name}"
