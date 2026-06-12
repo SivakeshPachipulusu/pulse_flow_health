@@ -7,7 +7,7 @@ module Api
         patients = patients.by_ward(params[:ward]) if params[:ward].present?
         patients = patients.where(status: params[:status]) if params[:status].present?
 
-        render json: { data: PatientSerializer.render_as_hash(patients, view: :with_latest_vitals) }
+      render json: { data: PatientSerializer.render_as_hash(patients, view: :with_latest_vitals), total: patients.size }
       end
 
       def show

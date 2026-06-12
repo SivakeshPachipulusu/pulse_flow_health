@@ -52,14 +52,7 @@ export interface ChartData {
   latest_reading: VitalReading | null;
 }
 
-export interface PaginationMeta {
-  count: number;
-  page: number;
-  items: number;
-  pages: number;
-}
-
 export interface PatientsResponse {
   data: Patient[];
-  pagination: PaginationMeta;
+  total: number;
 }

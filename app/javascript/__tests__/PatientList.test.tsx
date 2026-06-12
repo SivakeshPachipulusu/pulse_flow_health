@@ -47,7 +47,7 @@ const mockPatients: Patient[] = [
 ];
 
 const mockPaginatedResponse = {
-  data: { data: mockPatients, pagination: { count: 1, page: 1, items: 25, pages: 1 } },
+  data: { data: mockPatients, total: 1 },
 };
 
 beforeEach(() => {
@@ -87,7 +87,7 @@ test("calls onSelectPatient when view button is clicked", async () => {
 
 test("shows 'No patients found' when list is empty", async () => {
   (patientsApi.list as jest.Mock).mockResolvedValue({
-    data: { data: [], pagination: { count: 0, page: 1, items: 25, pages: 0 } },
+    data: { data: [], total: 0 },
   });
   render(<PatientList onSelectPatient={jest.fn()} />);
   await waitFor(() =>
@@ -107,5 +107,4 @@ test("fires new search when query changes", async () => {
     expect(patientsApi.list).toHaveBeenCalledWith(
       expect.objectContaining({ q: "John" })
     )
-  );
-});
+  );});

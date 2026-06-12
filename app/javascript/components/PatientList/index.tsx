@@ -21,16 +21,13 @@ const PatientList: React.FC<Props> = ({ onSelectPatient }) => {
   const [ward, setWard] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
 
-  const fetchPatients = useCallback(async (q: string, w: string, p: number) => {
+  const fetchPatients = useCallback(async (q: string, w: string) => {
     setLoading(true);
     setError(null);
     try {
-      const { data } = await patientsApi.list({ q: q || undefined, ward: w || undefined, page: p });
+      const { data } = await patientsApi.list({ q: q || undefined, ward: w || undefined });
       setPatients(data.data);
-      setTotalPages(data.pagination.pages);
     } catch {
       setError("Failed to load patients. Please try again.");
     } finally {
@@ -39,8 +36,8 @@ const PatientList: React.FC<Props> = ({ onSelectPatient }) => {
   }, []);
 
   React.useEffect(() => {
-    fetchPatients(query, ward, page);
-  }, [fetchPatients, query, ward, page]);
+    fetchPatients(query, ward);
+  }, [fetchPatients, query, ward]);
 
   return (
     <div className="card shadow-sm">
@@ -55,7 +52,7 @@ const PatientList: React.FC<Props> = ({ onSelectPatient }) => {
             className="form-control form-control-sm"
             placeholder="Search name / MRN / notes…"
             value={query}
-            onChange={(e) => { setQuery(e.target.value); setPage(1); }}
+            onChange={(e) => setQuery(e.target.value)}
             aria-label="Search patients"
           />
           <input
@@ -63,7 +60,7 @@ const PatientList: React.FC<Props> = ({ onSelectPatient }) => {
             className="form-control form-control-sm"
             placeholder="Ward"
             value={ward}
-            onChange={(e) => { setWard(e.target.value); setPage(1); }}
+            onChange={(e) => setWard(e.target.value)}
             aria-label="Filter by ward"
           />
         </div>
@@ -135,25 +132,6 @@ const PatientList: React.FC<Props> = ({ onSelectPatient }) => {
         )}
       </div>
 
-      {totalPages > 1 && (
-        <div className="card-footer d-flex justify-content-between align-items-center">
-          <button
-            className="btn btn-sm btn-outline-secondary"
-            disabled={page <= 1}
-            onClick={() => setPage((p) => p - 1)}
-          >
-            &laquo; Prev
-          </button>
-          <span className="text-muted small">Page {page} of {totalPages}</span>
-          <button
-            className="btn btn-sm btn-outline-secondary"
-            disabled={page >= totalPages}
-            onClick={() => setPage((p) => p + 1)}
-          >
-            Next &raquo;
-          </button>
-        </div>
-      )}
     </div>
   );
 };
