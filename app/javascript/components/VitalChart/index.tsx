@@ -1,8 +1,5 @@
-import React from "react";
-import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid,
-  Tooltip, ReferenceLine, ResponsiveContainer
-} from "recharts";
+import type { FC } from "react";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ReferenceLine, ResponsiveContainer } from "recharts";
 import type { ChartPoint } from "../../types";
 
 interface Props {
@@ -16,7 +13,7 @@ interface Props {
 const fmt = (iso: string) =>
   new Date(iso).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
-const VitalChart: React.FC<Props> = ({ title, series, color, unit, dangerThreshold }) => {
+const VitalChart: FC<Props> = ({ title, series, color, unit, dangerThreshold }) => {
   if (!series.length) {
     return (
       <div className="card h-100">
@@ -48,14 +45,7 @@ const VitalChart: React.FC<Props> = ({ title, series, color, unit, dangerThresho
             {dangerThreshold && (
               <ReferenceLine y={dangerThreshold} stroke="#dc3545" strokeDasharray="4 2" label={{ value: "⚠ threshold", fontSize: 10, fill: "#dc3545" }} />
             )}
-            <Line
-              type="monotone"
-              dataKey="value"
-              stroke={color}
-              strokeWidth={2}
-              dot={false}
-              activeDot={{ r: 4 }}
-            />
+            <Line type="monotone" dataKey="value" stroke={color} strokeWidth={2} dot={false} activeDot={{ r: 4 }} />
           </LineChart>
         </ResponsiveContainer>
       </div>

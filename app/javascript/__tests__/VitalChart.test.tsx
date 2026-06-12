@@ -1,4 +1,4 @@
-import React from "react";
+import { type FC, type ReactNode } from "react";
 import { render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import VitalChart from "../components/VitalChart";
@@ -8,7 +8,7 @@ jest.mock("recharts", () => {
   const Recharts = jest.requireActual("recharts");
   return {
     ...Recharts,
-    ResponsiveContainer: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+    ResponsiveContainer: ({ children }: { children: ReactNode }) => <div>{children}</div>,
   };
 });
 

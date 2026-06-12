@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import PatientList from "./components/PatientList";
 import Dashboard from "./components/Dashboard";
+import type { FC } from "react";
 import type { Patient } from "./types";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const App: React.FC = () => {
+const App: FC = () => {
   const [selected, setSelected] = useState<Patient | null>(null);
 
   return (

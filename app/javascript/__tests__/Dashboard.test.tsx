@@ -1,4 +1,4 @@
-import React from "react";
+import { type FC, type ReactNode } from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
@@ -9,7 +9,7 @@ import type { Patient, ChartData } from "../types";
 jest.mock("../api/client");
 jest.mock("recharts", () => {
   const Recharts = jest.requireActual("recharts");
-  return { ...Recharts, ResponsiveContainer: ({ children }: { children: React.ReactNode }) => <div>{children}</div> };
+  return { ...Recharts, ResponsiveContainer: ({ children }: { children: ReactNode }) => <div>{children}</div> };
 });
 
 const patient: Patient = {

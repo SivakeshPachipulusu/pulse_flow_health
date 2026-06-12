@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, type FC } from "react";
 import type { Patient } from "../../types";
 import { patientsApi } from "../../api/client";
 
@@ -6,7 +6,7 @@ interface Props {
   onSelectPatient: (patient: Patient) => void;
 }
 
-const StatusBadge: React.FC<{ status: Patient["status"] }> = ({ status }) => {
+const StatusBadge: FC<{ status: Patient["status"] }> = ({ status }) => {
   const colorMap = { active: "success", discharged: "secondary", deceased: "dark" } as const;
   return (
     <span className={`badge bg-${colorMap[status]}`}>
@@ -15,7 +15,7 @@ const StatusBadge: React.FC<{ status: Patient["status"] }> = ({ status }) => {
   );
 };
 
-const PatientList: React.FC<Props> = ({ onSelectPatient }) => {
+const PatientList: FC<Props> = ({ onSelectPatient }) => {
   const [patients, setPatients] = useState<Patient[]>([]);
   const [query, setQuery] = useState("");
   const [ward, setWard] = useState("");
@@ -35,7 +35,7 @@ const PatientList: React.FC<Props> = ({ onSelectPatient }) => {
     }
   }, []);
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetchPatients(query, ward);
   }, [fetchPatients, query, ward]);
 
@@ -67,9 +67,7 @@ const PatientList: React.FC<Props> = ({ onSelectPatient }) => {
       </div>
 
       <div className="card-body p-0">
-        {error && (
-          <div className="alert alert-danger m-3" role="alert">{error}</div>
-        )}
+        {error && <div className="alert alert-danger m-3" role="alert">{error}</div>}
 
         {loading ? (
           <div className="text-center py-5">
@@ -93,9 +91,7 @@ const PatientList: React.FC<Props> = ({ onSelectPatient }) => {
               <tbody>
                 {patients.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="text-center text-muted py-4">
-                      No patients found
-                    </td>
+                    <td colSpan={6} className="text-center text-muted py-4">No patients found</td>
                   </tr>
                 ) : (
                   patients.map((p) => {
@@ -115,10 +111,7 @@ const PatientList: React.FC<Props> = ({ onSelectPatient }) => {
                           ) : "—"}
                         </td>
                         <td>
-                          <button
-                            className="btn btn-sm btn-outline-primary"
-                            onClick={() => onSelectPatient(p)}
-                          >
+                          <button className="btn btn-sm btn-outline-primary" onClick={() => onSelectPatient(p)}>
                             View
                           </button>
                         </td>
@@ -131,7 +124,6 @@ const PatientList: React.FC<Props> = ({ onSelectPatient }) => {
           </div>
         )}
       </div>
-
     </div>
   );
 };
