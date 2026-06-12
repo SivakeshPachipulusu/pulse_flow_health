@@ -32,7 +32,7 @@ const mockPatients: Patient[] = [
         heart_rate: 95,
         spo2: 98,
         blood_pressure: "120/80",
-        temperature: 37.1,
+        temperature: 98.6,
         status: "received",
         critical: false,
         anonymized: false,

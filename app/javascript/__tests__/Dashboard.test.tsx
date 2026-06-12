@@ -36,7 +36,7 @@ const chartData: ChartData = {
   series: {
     heart_rate: [{ t: new Date().toISOString(), v: 88 }],
     spo2: [{ t: new Date().toISOString(), v: 97 }],
-    temperature: [{ t: new Date().toISOString(), v: 37.2 }],
+    temperature: [{ t: new Date().toISOString(), v: 98.6 }],
     respiratory_rate: [{ t: new Date().toISOString(), v: 16 }],
   },
   latest_reading: {
@@ -48,7 +48,7 @@ const chartData: ChartData = {
     heart_rate: 88,
     spo2: 97,
     blood_pressure: "118/76",
-    temperature: 37.2,
+    temperature: 98.6,
     status: "received",
     critical: false,
     anonymized: false,

@@ -107,7 +107,7 @@ const Dashboard: FC<Props> = ({ patient, onBack }) => {
           <MetricCard label="SpO₂" value={latest?.spo2 ?? null} unit="%" icon="bi-lungs-fill" critical={(latest?.spo2 ?? 100) < 90} />
         </div>
         <div className="col-6 col-md-3">
-          <MetricCard label="Temperature" value={latest?.temperature ?? null} unit="°C" icon="bi-thermometer-half" />
+          <MetricCard label="Temperature" value={latest?.temperature ?? null} unit="°F" icon="bi-thermometer-half" />
         </div>
         <div className="col-6 col-md-3">
           <MetricCard label="Blood Pressure" value={latest?.blood_pressure ?? null} unit="mmHg" icon="bi-activity" />
@@ -123,7 +123,7 @@ const Dashboard: FC<Props> = ({ patient, onBack }) => {
             <VitalChart title="SpO₂" series={chartData.series.spo2} color="#0d6efd" unit="%" />
           </div>
           <div className="col-12 col-lg-6">
-            <VitalChart title="Temperature" series={chartData.series.temperature} color="#fd7e14" unit="°C" />
+            <VitalChart title="Temperature" series={chartData.series.temperature} color="#fd7e14" unit="°F" />
           </div>
           <div className="col-12 col-lg-6">
             <VitalChart title="Respiratory Rate" series={chartData.series.respiratory_rate} color="#20c997" unit="bpm" />
@@ -137,7 +137,7 @@ const Dashboard: FC<Props> = ({ patient, onBack }) => {
 };
 
 const IngestTestReading: FC<{ patientId: string }> = ({ patientId }) => {
-  const [fields, setFields] = useState({ heart_rate: "82", spo2: "97", temperature: "36.9", respiratory_rate: "16", blood_pressure: "120/80" });
+  const [fields, setFields] = useState({ heart_rate: "82", spo2: "97", temperature: "98.6", respiratory_rate: "16", blood_pressure: "120/80" });
   const [status, setStatus] = useState<{ ok: boolean; msg: string } | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -180,7 +180,7 @@ const IngestTestReading: FC<{ patientId: string }> = ({ patientId }) => {
             {[
               { key: "heart_rate", label: "HR (bpm)" },
               { key: "spo2", label: "SpO₂ (%)" },
-              { key: "temperature", label: "Temp (°C)" },
+              { key: "temperature", label: "Temp (°F)" },
               { key: "respiratory_rate", label: "RR (bpm)" },
               { key: "blood_pressure", label: "BP (mmHg)" },
             ].map(({ key, label }) => (

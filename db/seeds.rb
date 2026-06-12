@@ -35,7 +35,7 @@ patients_data.each do |d|
 
     hr   = base_hr + (Math.sin(i * 0.4) * 8).round
     spo2 = [base_spo2 + rand(-1..1), 100].min
-    temp = 36.5 + (rand * 1.2).round(1)
+    temp = (97.7 + (rand * 2.0)).round(1)
     rr   = 14 + rand(-2..4)
     sbp  = 115 + rand(-10..15)
     dbp  = 75 + rand(-8..10)
